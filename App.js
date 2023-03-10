@@ -1,68 +1,56 @@
-import { ListItem, Modal, NewItemHeader } from "./src/components";
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+
+import Header from './src/components/Header';
+import StartGameScreen from './src/screens/StartGameScreen';
+import GameScreen from './src/screens/GameScreen';
+
+SplashScreen.preventAutoHideAsync();
+
 
 export default function App() {
-  const [itemText, setItemText] = useState("");
-  const [items, setItems] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
 
-  const onChangeText = (text) => {
-    setItemText(text);
+  const [fontsLoaded] = useFonts({
+    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+  });
+
+  React.useEffect(() =>{
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+
+  }, [fontsLoaded])
+
+  const [userNumber, setUserNumber] = React.useState();
+
+  const startGameHandler = (selectedNumber) => {
+    setUserNumber(selectedNumber);
   };
 
-  useEffect(() => {
-    console.log("useEffect", "itemText", itemText, "ITEMS", items);
-  }, []);
-
-  const addItemToState = () => {
-    console.log("addItemToState - start SIN JSON", items, itemText);
-    console.log(
-      "addItemToState - start CON JSON",
-      JSON.stringify({ items, itemText })
-    );
-    const newArr = [...items, { id: Date.now(), value: itemText }];
-    setItems(newArr);
-    setItemText("");
-    console.log("addItemToState - end", "items", newArr);
-  };
-
-  const openModal = (item) => {
-    setSelectedItem(item);
-    setModalVisible(true);
-  };
-
-  const onCancelModal = () => {
-    setModalVisible(!modalVisible);
-  };
-
-  const onDeleteModal = (id) => {
-    setModalVisible(!modalVisible);
-    setItems((oldArry) => oldArry.filter((item) => item.id !== id));
-    setSelectedItem(null);
-  };
-
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
-    <View style={styles.screen}>
-      {/* ADDITEM COMPONENT */}
-      <NewItemHeader
-        onChangeText={onChangeText}
-        itemText={itemText}
-        addItemToState={addItemToState}
-      />
-      {/* LIST COMPONENT */}
-      <ListItem items={items} openModal={openModal} />
-      {/* MODAl COMPONENT */}
-      <Modal
-        modalVisible={modalVisible}
-        selectedItem={selectedItem}
-        onCancelModal={onCancelModal}
-        onDeleteModal={onDeleteModal}
-      />
+    <View style={styles.container}>
+      <Header title="Adivina el numero" />
+      {
+        !userNumber
+          ? <StartGameScreen onStartGame={startGameHandler} />
+          : <GameScreen userOption={userNumber} />
+      }
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 const styles = StyleSheet.create({
   screen: {
