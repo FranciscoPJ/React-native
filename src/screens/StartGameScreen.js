@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
   },
   title: {
     ...titleStyle,
+    fontSize: 33,
   },
   inputContainer: {
     width: 300,

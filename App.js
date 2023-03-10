@@ -35,7 +35,7 @@ export default function App() {
     return null;
   }
   return (
-    <View style={styles.container}>
+    <View style={styles.container}> 
       <Header title="Adivina el numero" />
       {
         !userNumber
