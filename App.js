@@ -1,12 +1,12 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-
-import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
-import Header from './src/components/Header';
-import StartGameScreen from './src/screens/StartGameScreen';
+import { StyleSheet, View } from 'react-native';
+
 import GameScreen from './src/screens/GameScreen';
+import Header from './src/components/Header';
+import React from 'react';
+import StartGameScreen from './src/screens/StartGameScreen';
+import { useFonts } from 'expo-font';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -48,13 +48,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-});
-
-const styles = StyleSheet.create({
-  screen: {
-    padding: 30,
     flex: 1,
   },
 });
